@@ -2,10 +2,10 @@
 import { useRef } from "react"
 import { gsap, useGSAP, ScrollTrigger, prefersReduced } from "./motion"
 
-const words = ["Web experiences", "Shopify storefronts", "Portals & dashboards", "Design to launch"]
+const defaultWords = ["Web experiences", "Shopify storefronts", "Portals & dashboards", "Design to launch"]
 
 /** An endless band whose speed and direction follow your scroll velocity. */
-export function Marquee() {
+export function Marquee({ words = defaultWords }: { words?: string[] }) {
   const root = useRef<HTMLDivElement>(null)
   useGSAP(() => {
     if (prefersReduced()) return

@@ -23,7 +23,7 @@ export function About() {
       <div>
         <p className="ab-copy">{copy.split(" ").map((w, i) => <span className="ab-word" key={i}>{w} </span>)}</p>
         <p className="ab-sub">The studio gives that work a home of its own.</p>
-        <a href="https://github.com/Osayeidzaber" className="text-link" target="_blank" rel="noreferrer">See the code behind the studio <span aria-hidden>↗</span></a>
+        <a href="/osayeed-zaber" className="text-link">Meet Osayeed Zaber, the founder <span aria-hidden>→</span></a>
       </div>
     </section>
   )

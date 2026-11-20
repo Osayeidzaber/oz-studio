@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import { Bricolage_Grotesque, Instrument_Serif, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
+import { keywords } from "@/lib/seo"
 
 const sans = Bricolage_Grotesque({ variable: "--font-sans", subsets: ["latin"], display: "swap" })
 const serif = Instrument_Serif({ variable: "--font-serif", weight: "400", style: ["normal", "italic"], subsets: ["latin"], display: "swap" })
@@ -8,12 +9,20 @@ const mono = JetBrains_Mono({ variable: "--font-mono", subsets: ["latin"], displ
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ozstudio.cc"),
-  title: "OZ Studio — Independent design & development",
-  description: "The independent studio of Osayeed Zaber. Websites, Shopify storefronts, and the systems behind them. Based in Dhaka, working on the web.",
+  title: { default: "OZ Studio — Web design & development by Osayeed Zaber", template: "%s · OZ Studio" },
+  description: "OZ Studio is the independent design and development studio of Osayeed Zaber, a full-stack developer in Dhaka. Websites, Shopify storefronts, and the systems behind them.",
+  applicationName: "OZ Studio",
+  keywords,
+  authors: [{ name: "Osayeed Zaber", url: "/osayeed-zaber" }],
+  creator: "Osayeed Zaber",
+  publisher: "OZ Studio",
+  category: "technology",
   alternates: { canonical: "/" },
-  icons: { icon: "/logo.svg" },
-  openGraph: { title: "OZ Studio", description: "Good ideas. Built properly. Websites, storefronts, and the systems behind them.", url: "https://ozstudio.cc", siteName: "OZ Studio", images: ["/work/corso-velle-live.jpg"] },
-  twitter: { card: "summary_large_image" },
+  icons: { icon: "/logo.svg", apple: "/logo.svg" },
+  formatDetection: { email: false, telephone: false, address: false },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
+  openGraph: { type: "website", locale: "en_US", siteName: "OZ Studio", url: "/", title: "OZ Studio — Good ideas. Built properly.", description: "The independent studio of Osayeed Zaber. Websites, Shopify storefronts, and the systems behind them." },
+  twitter: { card: "summary_large_image", title: "OZ Studio — Good ideas. Built properly.", description: "The independent studio of Osayeed Zaber. Websites, Shopify storefronts, and the systems behind them." },
 }
 
 export const viewport: Viewport = { themeColor: "#000000", colorScheme: "dark" }

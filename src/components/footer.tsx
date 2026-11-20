@@ -12,9 +12,11 @@ export function Footer() {
   return (
     <footer ref={root} className="footer">
       <div className="ft-row">
-        <p>An independent practice by Osayeed Zaber.</p>
+        <p>An independent practice by <a href="/osayeed-zaber" className="ft-name">Osayeed Zaber</a>.</p>
         <nav aria-label="Footer">
+          <a href="/osayeed-zaber">Founder</a>
           <a href="https://github.com/Osayeidzaber" target="_blank" rel="noreferrer">GitHub ↗</a>
+          <a href="https://www.instagram.com/z3ber._/" target="_blank" rel="noreferrer">Instagram ↗</a>
           <a href="#top">Back to top ↑</a>
         </nav>
       </div>

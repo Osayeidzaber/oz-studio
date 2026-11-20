@@ -11,10 +11,12 @@ import { Process } from "@/components/process"
 import { About } from "@/components/about"
 import { Contact } from "@/components/contact"
 import { Footer } from "@/components/footer"
+import { homeGraph, ld } from "@/lib/seo"
 
 export default function Home() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={ld(homeGraph)} />
       <a href="#main" className="skip-link">Skip to content</a>
       <SmoothScroll />
       <Preloader />

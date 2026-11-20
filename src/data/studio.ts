@@ -3,7 +3,7 @@
  * Captures are full-page screenshots of the live sites (most refuse to be framed),
  * so the showroom scrolls a real capture and links out to the live site.
  */
-export const email = "osayeedjaber18@gmail.com"
+export { email } from "./email"
 
 export type Capture = { src: string; width: number; height: number }
 export type Site = {
