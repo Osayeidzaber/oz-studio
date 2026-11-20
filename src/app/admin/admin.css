@@ -43,7 +43,7 @@
 .desk .seg { display: inline-flex; align-self: flex-start; border: 1px solid var(--edge); border-radius: 999px; padding: 3px; }
 .desk .seg button[aria-pressed="true"] { background: var(--paper); color: var(--ink); }
 .desk-actions { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 18px; }
-.desk-actions .pill, .copy-bar .pill { background: transparent; }
+.desk-actions .pill:not(:hover), .copy-bar .pill:not(:hover) { background: transparent; }
 .file-pill { position: relative; cursor: pointer; }
 .file-pill input { position: absolute; inset: 0; opacity: 0; cursor: pointer; min-height: 0; }
 
