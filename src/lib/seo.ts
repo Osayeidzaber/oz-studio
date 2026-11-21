@@ -1,4 +1,4 @@
-import { founder, founderPath, siteUrl } from "@/data/founder"
+import { faq, founder, founderPath, siteUrl } from "@/data/founder"
 import { sites, work } from "@/data/studio"
 
 /**
@@ -13,7 +13,8 @@ export const ids = {
 }
 
 export const keywords = [
-  "Osayeed Zaber", "Osayeed", "Zaber", "Osayeid Zaber", "OZ Studio", "ozstudio",
+  "Osayeed Zaber", "Osayeed", "Zaber", "Osayeid Zaber", "Osayeed Jaber", "Osayeidzaber", "Osayeed Zaber developer",
+  "Osayeed Zaber Dhaka", "Osayeed Zaber Bangladesh", "Osayeed Zaber OZ Studio", "Zaber developer", "OZ Studio", "ozstudio", "ozstudio.cc", "OZ Studio Dhaka",
   "web developer Dhaka", "web design studio Dhaka", "full-stack developer Bangladesh",
   "Shopify developer Bangladesh", "Shopify theme developer", "Next.js developer", "Next.js developer Dhaka",
   "freelance web developer Bangladesh", "website design Uttara", "custom Shopify storefront", "admin dashboard development",
@@ -103,6 +104,12 @@ export const founderGraph = {
       mainEntity: { "@id": ids.person },
       about: { "@id": ids.person },
       hasPart: sites.map((s) => ({ "@type": "CreativeWork", name: s.title, url: s.liveUrl, creator: { "@id": ids.person } })),
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${siteUrl}${founderPath}#faq`,
+      isPartOf: { "@id": `${siteUrl}${founderPath}#webpage` },
+      mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
     },
     {
       "@type": "BreadcrumbList",

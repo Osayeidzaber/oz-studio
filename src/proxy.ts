@@ -1,38 +1,29 @@
 import { NextResponse, type NextRequest } from "next/server"
+import { SESSION_COOKIE, sessionToken, same } from "@/lib/admin-session"
 
 /**
- * The admin is gated with HTTP Basic auth against ADMIN_PASSWORD (any username).
- * Nothing about invoices is ever sent to the server: the PDF and email are made in the
- * browser and drafts live in that browser's storage. The gate keeps the tool private.
+ * The admin is gated by a signed cookie set on /admin/login. Invoices never reach the
+ * server (PDF and email are made in the browser), so this gate is what keeps the tool private.
  */
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl
+  const isLogin = pathname === "/admin/login"
   const password = process.env.ADMIN_PASSWORD
-  if (!password) {
-    // Local development works without setup; a deployment without a password stays shut.
-    if (process.env.NODE_ENV === "development") return NextResponse.next()
-    return new NextResponse("Admin is disabled. Set ADMIN_PASSWORD in the deployment's environment variables.", { status: 503 })
+  const done = (res: NextResponse) => {
+    res.headers.set("X-Robots-Tag", "noindex, nofollow")
+    res.headers.set("Cache-Control", "no-store")
+    return res
   }
-  const header = request.headers.get("authorization") ?? ""
-  const [scheme, encoded] = header.split(" ")
-  if (scheme === "Basic" && encoded) {
-    let supplied = ""
-    try { supplied = atob(encoded).split(":").slice(1).join(":") } catch {}
-    if (same(supplied, password)) {
-      const response = NextResponse.next()
-      response.headers.set("X-Robots-Tag", "noindex, nofollow")
-      response.headers.set("Cache-Control", "no-store")
-      return response
-    }
-  }
-  return new NextResponse("Authentication required.", { status: 401, headers: { "WWW-Authenticate": 'Basic realm="OZ Studio admin", charset="UTF-8"', "X-Robots-Tag": "noindex" } })
-}
 
-/** Length-independent comparison so timing doesn't leak how much of the password matched. */
-function same(a: string, b: string) {
-  const x = new TextEncoder().encode(a), y = new TextEncoder().encode(b)
-  let diff = x.length ^ y.length
-  for (let i = 0; i < Math.max(x.length, y.length); i++) diff |= (x[i] ?? 0) ^ (y[i] ?? 0)
-  return diff === 0
+  if (!password) {
+    // Local development works without setup; a deployment without a password stays shut (the login page says why).
+    if (process.env.NODE_ENV === "development" || isLogin) return done(NextResponse.next())
+    return done(NextResponse.redirect(new URL("/admin/login", request.url)))
+  }
+  const signedIn = same(request.cookies.get(SESSION_COOKIE)?.value ?? "", await sessionToken(password))
+  if (isLogin && signedIn) return done(NextResponse.redirect(new URL("/admin", request.url)))
+  if (isLogin || signedIn || pathname === "/admin/logout") return done(NextResponse.next())
+  return done(NextResponse.redirect(new URL("/admin/login", request.url)))
 }
 
 export const config = { matcher: ["/admin", "/admin/:path*"] }

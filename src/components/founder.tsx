@@ -3,7 +3,7 @@ import { useRef } from "react"
 import { gsap, useGSAP, onReady, prefersReduced } from "./motion"
 import { Magnetic } from "./magnetic"
 import { RevealTitle, Reveal } from "./reveal"
-import { founder, formatMonth } from "@/data/founder"
+import { faq, founder, formatMonth } from "@/data/founder"
 import { sites, hostOf } from "@/data/studio"
 
 /** The name, one letter at a time, with the monogram turning beside it. */
@@ -199,10 +199,30 @@ export function FounderWork() {
 }
 
 /** Closing call to action. */
+/** Straight answers to what people search for. Native details/summary: works without JS and with a keyboard. */
+export function FounderFaq() {
+  return (
+    <section className="faq" aria-labelledby="faq-title">
+      <div className="section-head">
+        <div><p className="label">06 / QUICK ANSWERS</p><RevealTitle id="faq-title" text="Asked|*often.*" /></div>
+        <p className="section-note">The short version, for anyone who searched the name.</p>
+      </div>
+      <Reveal className="faq-list">
+        {faq.map((f, i) => (
+          <details key={f.q} className="faq-item" open={i === 0}>
+            <summary><span className="label">{String(i + 1).padStart(2, "0")}</span><h3>{f.q}</h3><span className="faq-plus" aria-hidden /></summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </Reveal>
+    </section>
+  )
+}
+
 export function FounderContact() {
   return (
     <section className="contact fc" aria-labelledby="fc-title">
-      <p className="label">06 / SAY HELLO</p>
+      <p className="label">07 / SAY HELLO</p>
       <RevealTitle id="fc-title" className="ct-title" text="Let’s build|*something.*" />
       <div className="ct-grid">
         <p className="ct-lede">Email is the fastest way to reach him. New businesses, better storefronts, and ideas that are ready to be built.</p>

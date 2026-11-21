@@ -182,6 +182,7 @@ export function InvoiceDesk() {
     <div className="desk">
       <header className="desk-top">
         <a href="/" className="wordmark">OZ<i className="dot" /><span>INVOICES</span></a>
+        <a href="/admin/logout" className="pill desk-logout">Sign out</a>
         <nav className="desk-tabs" aria-label="Desk">
           {(["invoice", "saved", "settings"] as const).map((p) => (
             <button key={p} aria-pressed={panel === p} onClick={() => setPanel(p)}>{p === "invoice" ? "Invoice" : p === "saved" ? `Saved (${data.invoices.length})` : "Studio details"}</button>

@@ -408,3 +408,18 @@ a.idx-row:hover .idx-arrow { transform: rotate(45deg); }
   .tk-col { padding-bottom: 28px; }
   .fw-grid { grid-template-columns: 1fr; }
 }
+
+/* Founder FAQ */
+.faq { padding-bottom: clamp(100px, 12vw, 180px); }
+.faq-list { padding: 0 var(--gutter); border-top: 1px solid var(--rule); }
+.faq-item { border-bottom: 1px solid var(--rule); }
+.faq-item summary { display: grid; grid-template-columns: 48px 1fr 28px; align-items: center; gap: 16px; min-height: 76px; padding: 18px 0; cursor: pointer; list-style: none; }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item h3 { font-size: clamp(20px, 2.4vw, 32px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.2; transition: color 0.3s; }
+.faq-item summary:hover h3 { color: var(--mist); }
+.faq-plus { position: relative; width: 18px; height: 18px; justify-self: end; }
+.faq-plus::before, .faq-plus::after { content: ""; position: absolute; left: 0; top: 8px; width: 18px; height: 1.5px; background: var(--paper); transition: transform 0.5s var(--ease); }
+.faq-plus::after { transform: rotate(90deg); }
+.faq-item[open] .faq-plus::after { transform: rotate(0deg); }
+.faq-item p { max-width: 760px; padding: 0 0 28px 64px; color: var(--mist); font-size: 17px; line-height: 1.75; }
+@media (max-width: 640px) { .faq-item summary { grid-template-columns: 36px 1fr 20px; gap: 10px; } .faq-item p { padding-left: 46px; font-size: 16px; } }

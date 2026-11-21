@@ -8,7 +8,7 @@ export const founder = {
   givenName: "Osayeed",
   familyName: "Zaber",
   // Spellings people actually use: the GitHub handle and the email both differ from the display name.
-  alternateNames: ["Osayeed", "Zaber", "Osayeid Zaber", "Osayeed Jaber"],
+  alternateNames: ["Osayeed", "Zaber", "Osayeid Zaber", "Osayeed Jaber", "Osayeidzaber", "OZ"],
   title: "Full-stack developer",
   role: "Founder, OZ Studio",
   location: { locality: "Uttara", region: "Dhaka", country: "Bangladesh", label: "Uttara, Dhaka, Bangladesh" },
@@ -48,6 +48,16 @@ export const founder = {
     { date: "2024-11", title: "Started on GitHub", org: "", body: "First public repos: a glassmorphism todo list and a lot of experiments.", link: "https://github.com/Osayeidzaber" },
   ],
 }
+
+/** Plain questions people search, answered only with the facts above. Shown on the page and as FAQPage data. */
+export const faq = [
+  { q: "Who is Osayeed Zaber?", a: "Osayeed Zaber is a full-stack developer in Uttara, Dhaka, Bangladesh, and the founder of OZ Studio, an independent design and development studio. He builds Shopify storefronts, Next.js platforms and admin portals." },
+  { q: "What is OZ Studio?", a: "OZ Studio (ozstudio.cc) is the independent design and development practice of Osayeed Zaber: websites, Shopify storefronts, and the systems behind them, built in Dhaka for clients anywhere." },
+  { q: "What has Osayeed Zaber built?", a: "The Corso Velle Shopify storefront and CRM, the ARZ Lifestyle storefront, the TajWater delivery platform in Vancouver with Stripe subscriptions and a Supabase back office, and the website and certificate system for the International Global Affairs Council (IGAC)." },
+  { q: "Which technologies does he work with?", a: "TypeScript, React and Next.js on the front end; Supabase, Node.js, PostgreSQL and MongoDB on the back end; Shopify, Liquid and Stripe for commerce; deployed on Vercel." },
+  { q: "Where is Osayeed Zaber based?", a: "Uttara, Dhaka, Bangladesh. He works with clients remotely, including brands in Bangladesh and a company in Vancouver, Canada." },
+  { q: "How do I contact Osayeed Zaber?", a: `Email ${email}, or find him on GitHub as @Osayeidzaber and on Instagram as @z3ber._.` },
+]
 
 export const formatMonth = (ym: string) => {
   const [y, m] = ym.split("-").map(Number)

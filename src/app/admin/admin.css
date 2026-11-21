@@ -77,3 +77,29 @@
   .saved-row { grid-template-columns: 1fr auto; }
   .saved-row select { grid-column: 1; }
 }
+
+/* Sign-in */
+.login { position: relative; min-height: 100svh; display: grid; place-items: center; padding: 96px 16px 72px; overflow: hidden; }
+.login-mark { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
+.login-mark img { width: min(90vw, 720px); height: auto; opacity: 0.06; animation: login-spin 60s linear infinite; }
+@keyframes login-spin { to { transform: rotate(360deg); } }
+.login-home { position: absolute; top: 24px; left: clamp(16px, 3vw, 40px); font-size: 26px; }
+.login-card { position: relative; width: min(440px, 100%); padding: clamp(28px, 5vw, 44px); border: 1px solid var(--rule); border-radius: 20px; background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(16px); animation: login-in 0.9s var(--ease) both; }
+@keyframes login-in { from { opacity: 0; transform: translateY(24px); } }
+.login-card h1 { margin: 16px 0 10px; font-size: clamp(44px, 9vw, 64px); font-weight: 600; line-height: 0.95; letter-spacing: -0.05em; }
+.login-note { color: var(--mist); font-size: 15px; line-height: 1.6; margin-bottom: 28px; }
+.login-form { display: flex; flex-direction: column; gap: 10px; }
+.login-field { display: flex; flex-direction: column; gap: 8px; }
+.login-input { display: flex; border: 1px solid var(--edge); border-radius: 12px; background: var(--lift); transition: border-color 0.25s; }
+.login-input:focus-within { border-color: var(--paper); }
+.login-input input { flex: 1; min-width: 0; min-height: 52px; padding: 0 16px; font: inherit; font-size: 16px; color: var(--paper); background: transparent; border: 0; outline: none; }
+.login-input button { min-width: 64px; min-height: 52px; color: var(--mist); font-size: 13px; }
+.login-input button:hover, .login-input button:focus-visible { color: var(--paper); }
+.login-error { min-height: 20px; color: var(--paper); font-size: 14px; }
+.login-submit { display: flex; justify-content: space-between; align-items: center; min-height: 56px; padding: 0 22px; border-radius: 999px; background: var(--paper); color: var(--ink); font-size: 15px; font-weight: 600; transition: transform 0.3s var(--ease), opacity 0.3s; }
+.login-submit:hover:not(:disabled) { transform: translateY(-2px); }
+.login-submit:disabled { opacity: 0.6; cursor: progress; }
+.login-foot { position: absolute; bottom: 24px; }
+.login-foot a { color: var(--paper); }
+.desk-logout { order: 2; }
+@media (prefers-reduced-motion: reduce) { .login-mark img, .login-card { animation: none; } }

@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   category: "technology",
   alternates: { canonical: "/" },
   icons: { icon: "/logo.svg", apple: "/logo.svg" },
+  // Paste the Search Console HTML-tag token into GOOGLE_SITE_VERIFICATION to verify ozstudio.cc.
+  ...(process.env.GOOGLE_SITE_VERIFICATION ? { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } } : {}),
   formatDetection: { email: false, telephone: false, address: false },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
   openGraph: { type: "website", locale: "en_US", siteName: "OZ Studio", url: "/", title: "OZ Studio — Good ideas. Built properly.", description: "The independent studio of Osayeed Zaber. Websites, Shopify storefronts, and the systems behind them." },

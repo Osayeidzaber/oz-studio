@@ -5,7 +5,7 @@ import { Cursor } from "@/components/cursor"
 import { Header } from "@/components/header"
 import { Marquee } from "@/components/marquee"
 import { Footer } from "@/components/footer"
-import { FounderHero, FounderStory, FounderPillars, FounderTimeline, FounderToolkit, FounderWork, FounderContact } from "@/components/founder"
+import { FounderHero, FounderStory, FounderPillars, FounderTimeline, FounderToolkit, FounderWork, FounderFaq, FounderContact } from "@/components/founder"
 import { founder, founderPath } from "@/data/founder"
 import { founderGraph, keywords, ld } from "@/lib/seo"
 
@@ -46,6 +46,7 @@ export default function FounderPage() {
         <FounderTimeline />
         <FounderToolkit />
         <FounderWork />
+        <FounderFaq />
         <FounderContact />
       </main>
       <Footer />
