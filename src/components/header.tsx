@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react"
 import { gsap, ScrollTrigger } from "./motion"
 import { Magnetic } from "./magnetic"
 import { email } from "@/data/studio"
+import { founder } from "@/data/founder"
 
 const links = [
   { href: "/#work", label: "Work" },
@@ -32,6 +33,7 @@ export function Header() {
       start: 0, end: "max",
       onUpdate: (self) => {
         const el = bar.current!
+        if (document.documentElement.classList.contains("menu-open")) return
         el.classList.toggle("is-solid", self.scroll() > 40)
         gsap.to(el, { yPercent: self.direction === 1 && self.scroll() > 300 ? -110 : 0, duration: 0.5, ease: "expo.out", overwrite: "auto" })
       },
@@ -40,6 +42,9 @@ export function Header() {
   }, [])
   useEffect(() => {
     if (open) window.__lenis?.stop(); else window.__lenis?.start()
+    document.documentElement.classList.toggle("menu-open", open)
+    // The close button lives in the header, so it must be on screen while the menu is.
+    if (open && bar.current) gsap.to(bar.current, { yPercent: 0, duration: 0.4, ease: "expo.out", overwrite: true })
     const esc = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false)
     window.addEventListener("keydown", esc)
     return () => window.removeEventListener("keydown", esc)
@@ -60,12 +65,18 @@ export function Header() {
       <div id="menu" className={`menu ${open ? "is-open" : ""}`} hidden={!open}>
         <nav aria-label="Menu">
           {[...links, { href: "/#contact", label: "Contact" }].map((l, i) => (
-            <a key={l.href} href={l.href} onClick={(e) => { setOpen(false); glide(e) }} style={{ transitionDelay: `${0.06 * i + 0.1}s` }}>
+            <a key={l.href} href={l.href} onClick={(e) => { setOpen(false); glide(e) }} style={{ animationDelay: `${0.06 * i + 0.1}s` }}>
               <span className="label">0{i + 1}</span>{l.label}
             </a>
           ))}
         </nav>
-        <a className="menu-mail" href={`mailto:${email}`}>{email}</a>
+        <div className="menu-foot">
+          <a href="/#contact" className="btn btn-light menu-cta" onClick={(e) => { setOpen(false); glide(e) }}><span className="btn-fill" />Start a project <span aria-hidden>↗</span></a>
+          <div className="menu-meta">
+            <a className="menu-mail" href={`mailto:${email}`}>{email}</a>
+            <span className="menu-social">{founder.socials.map((s) => <a key={s.url} href={s.url} target="_blank" rel="noreferrer me">{s.label}</a>)}</span>
+          </div>
+        </div>
       </div>
     </>
   )

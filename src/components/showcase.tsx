@@ -9,11 +9,18 @@ import { sites, hostOf, type Site } from "@/data/studio"
 /**
  * The live sites. On wide screens the section pins and the track runs sideways;
  * as each panel passes, its real homepage scrolls inside the browser window and the
- * phone beside it. On small screens the same panels stack and scroll in place.
+ * phone beside it. On phones the panels become a swipeable deck: the active card's
+ * captures scroll on their own while the section is on screen.
  */
 export function Showcase() {
   const root = useRef<HTMLElement>(null)
   const [active, setActive] = useState<Site | null>(null)
+  const [cur, setCur] = useState(0)
+  const goTo = (i: number) => {
+    const track = root.current?.querySelector<HTMLElement>(".sc-track")
+    const panel = root.current?.querySelectorAll<HTMLElement>(".sc-track > *")[i]
+    if (track && panel) track.scrollTo({ left: panel.offsetLeft - (track.clientWidth - panel.offsetWidth) / 2, behavior: "smooth" })
+  }
 
   useGSAP(() => {
     const q = gsap.utils.selector(root)
@@ -29,7 +36,8 @@ export function Showcase() {
       })
     }
 
-    mm.add({ wide: "(min-width: 960px)", reduce: "(prefers-reduced-motion: reduce)" }, (ctx) => {
+    // gsap only runs this when at least one condition matches, so "narrow" must be listed for phones.
+    mm.add({ wide: "(min-width: 960px)", narrow: "(max-width: 959px)", reduce: "(prefers-reduced-motion: reduce)" }, (ctx) => {
       const { wide, reduce } = ctx.conditions as { wide: boolean; reduce: boolean }
       if (reduce) return
       if (wide) {
@@ -55,10 +63,24 @@ export function Showcase() {
           gsap.fromTo(panel.querySelector(".sc-phone"), { yPercent: 18, rotate: 8 }, { yPercent: -10, rotate: -4, ease: "none", scrollTrigger: { trigger: panel, containerAnimation: tween, start: "left right", end: "right left", scrub: 1 } })
         })
       } else {
-        panels.forEach((panel) => {
-          scrollCaptures(panel, { trigger: panel, start: "top 80%", end: "bottom 20%" })
-          gsap.from(panel, { y: 80, opacity: 0, duration: 1.2, ease: "expo.out", scrollTrigger: { trigger: panel, start: "top 88%", once: true } })
-        })
+        // Phone deck: which card is centred decides whose captures play.
+        const loops = panels.map((panel) => Array.from(panel.querySelectorAll<HTMLElement>("[data-scroll-capture]")).map((img) => {
+          const frame = img.parentElement!
+          return gsap.fromTo(img, { y: 0 }, { y: () => -(img.offsetHeight - frame.clientHeight), duration: Math.max(6, (img.offsetHeight || 2400) / 260), ease: "sine.inOut", repeat: -1, yoyo: true, repeatDelay: 0.8, paused: true })
+        }))
+        let index = 0, onScreen = false
+        const sync = () => loops.forEach((tweens, i) => tweens.forEach((t) => (onScreen && i === index ? t.play() : t.pause())))
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((en) => {
+            if (en.intersectionRatio < 0.6) return
+            const i = Array.from(track.children).indexOf(en.target)
+            index = i; setCur(i); sync()
+          })
+        }, { root: track, threshold: [0.6] })
+        Array.from(track.children).forEach((c) => io.observe(c))
+        ScrollTrigger.create({ trigger: track, start: "top bottom", end: "bottom top", onToggle: (self) => { onScreen = self.isActive; sync() } })
+        gsap.from(panels[0], { y: 60, opacity: 0, duration: 1.2, ease: "expo.out", scrollTrigger: { trigger: track, start: "top 88%", once: true } })
+        return () => { io.disconnect(); loops.flat().forEach((t) => t.kill()) }
       }
     })
     return () => mm.revert()
@@ -77,6 +99,15 @@ export function Showcase() {
         <div className="sc-hud" aria-hidden>
           <span className="sc-count label"><b>01</b> / {String(sites.length).padStart(2, "0")}</span>
           <span className="sc-progress"><i /></span>
+        </div>
+        <div className="sc-dots">
+          <span className="label"><b>{String(Math.min(cur + 1, sites.length)).padStart(2, "0")}</b> / {String(sites.length).padStart(2, "0")}</span>
+          <span className="sc-dot-row">
+            {[...sites, null].map((s, i) => (
+              <button key={s?.slug ?? "end"} className="sc-dot" aria-label={s ? `Show ${s.title}` : "Show what’s next"} aria-current={i === cur} onClick={() => goTo(i)}><i /></button>
+            ))}
+          </span>
+          <span className="label sc-swipe" aria-hidden>SWIPE →</span>
         </div>
         <div className="sc-track">
           {sites.map((s, i) => (
